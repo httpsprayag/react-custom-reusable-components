@@ -1,10 +1,11 @@
-import MyForm from "./components/MyForm";
+// App.jsx
+
+import AppRoutes from "./AppRoutes";
 
 const App = () => {
   return (
     <div>
-      Hello world
-      <MyForm />
+      <AppRoutes />
     </div>
   );
 };
