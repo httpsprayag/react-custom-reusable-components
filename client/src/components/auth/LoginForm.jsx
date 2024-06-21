@@ -8,6 +8,38 @@ import {
 } from "../../features/auth/authSelectors";
 import { Link, useNavigate } from "react-router-dom";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import { styled } from "@mui/system";
+
+const StyledBox = styled(Box)(({ theme }) => ({
+  maxWidth: 360,
+  width: "100%",
+  margin: "auto",
+  padding: theme.spacing(3),
+  backgroundColor: theme.palette.background.paper,
+  boxShadow: theme.shadows[4],
+  borderRadius: theme.shape.borderRadius,
+}));
+
+const StyledTypography = styled(Typography)({
+  marginBottom: "16px",
+  textAlign: "center",
+});
+
+const StyledForm = styled("form")({
+  display: "flex",
+  flexDirection: "column",
+  gap: "16px",
+});
+
+const StyledTextField = styled(TextField)({
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "4px",
+  },
+});
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+}));
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -15,37 +47,36 @@ const LoginForm = () => {
   const loading = useSelector(selectAuthLoading);
   const error = useSelector(selectAuthError);
 
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await dispatch(login({ username, password }));
+    await dispatch(login({ email, password }));
     navigate("/dashboard");
   };
 
   return (
-    <Box sx={{ maxWidth: 400, margin: "auto", padding: 2 }}>
-      <Typography variant="h5" gutterBottom>
+    <StyledBox>
+      <StyledTypography variant="h5" gutterBottom>
         Login
-      </Typography>
-      <form onSubmit={handleSubmit}>
+      </StyledTypography>
+      <StyledForm onSubmit={handleSubmit}>
         {error && (
           <Typography variant="body2" color="error">
             {error.message}
           </Typography>
         )}
-        <TextField
-          type="text"
-          label="Username"
+        <StyledTextField
+          type="email" // Change type to email
+          label="Email"
           variant="outlined"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           fullWidth
           required
-          margin="normal"
         />
-        <TextField
+        <StyledTextField
           type="password"
           label="Password"
           variant="outlined"
@@ -53,22 +84,20 @@ const LoginForm = () => {
           onChange={(e) => setPassword(e.target.value)}
           fullWidth
           required
-          margin="normal"
         />
-        <Button
+        <StyledButton
           type="submit"
           variant="contained"
           color="primary"
           disabled={loading}
-          sx={{ mt: 2 }}
         >
           {loading ? "Logging in..." : "Login"}
-        </Button>
-      </form>
-      <Typography variant="body2" sx={{ mt: 2 }}>
+        </StyledButton>
+      </StyledForm>
+      <Typography variant="body2" sx={{ mt: 2, textAlign: "center" }}>
         Don't have an account? <Link to="/register">Register</Link>
       </Typography>
-    </Box>
+    </StyledBox>
   );
 };
 
